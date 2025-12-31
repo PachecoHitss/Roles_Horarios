@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Links de WhatsApp{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fab fa-whatsapp me-2"></i>Notificaciones WhatsApp</h4>
+                <span class="badge bg-light text-dark">{{ programacion }}</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Haz clic en el botón "Enviar" para abrir WhatsApp Web/App con el mensaje pre-cargado para cada usuario.
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Celular</th>
+                                <th>Turnos Asignados</th>
+                                <th class="text-end">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in lista_links %}
+                            <tr>
+                                <td class="fw-bold">{{ item.usuario.first_name }} {{ item.usuario.last_name }}</td>
+                                <td>{{ item.usuario.celular|default:"No registrado" }}</td>
+                                <td>
+                                    <ul class="list-unstyled mb-0 small">
+                                        {% for asig in item.asignaciones %}
+                                        <li>
+                                            <span class="badge bg-secondary">{{ asig.turno.get_dia_display|slice:":3" }}</span>
+                                            {{ asig.turno.nombre }} ({{ asig.rol.nombre }})
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td class="text-end">
+                                    {% if item.usuario.celular %}
+                                    <a href="{{ item.link }}" target="_blank" class="btn btn-success btn-sm">
+                                        <i class="fab fa-whatsapp me-1"></i> Enviar
+                                    </a>
+                                    {% else %}
+                                    <button class="btn btn-secondary btn-sm" disabled title="Sin número de celular">
+                                        <i class="fab fa-whatsapp me-1"></i> Enviar
+                                    </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">
+                                    No hay asignaciones para esta programación.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3 border-top">
+                    <a href="/admin/users/programacion/" class="btn btn-outline-secondary">Volver al Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

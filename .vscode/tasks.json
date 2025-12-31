@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Django Server",
+			"type": "shell",
+			"command": "python manage.py",
+			"args": [
+				"runserver"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "none"
+		}
+	]
+}
