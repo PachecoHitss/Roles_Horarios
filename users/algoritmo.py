@@ -1,7 +1,7 @@
 import random
 from datetime import timedelta
 from django.db import transaction
-from .models import Asignacion, Disponibilidad, Turno, Rol
+from .models import Asignacion, Indisponibilidad, Turno, Rol, CustomUser
 
 class AlgoritmoProgramacion:
     def __init__(self, programacion):
@@ -36,13 +36,14 @@ class AlgoritmoProgramacion:
         for rol in roles_necesarios:
             # Buscar candidatos disponibles
             # 1. Que tengan el rol
-            # 2. Que hayan marcado disponibilidad para este turno específico
-            candidatos = Disponibilidad.objects.filter(
-                turno=turno,
-                usuario__roles=rol
-            ).select_related('usuario')
+            # 2. Que NO tengan indisponibilidad marcada para este turno
+            candidatos = CustomUser.objects.filter(
+                roles=rol
+            ).exclude(
+                indisponibilidades__turno=turno
+            ).distinct()
             
-            lista_candidatos = [d.usuario for d in candidatos]
+            lista_candidatos = list(candidatos)
             
             # Filtrar candidatos que ya tienen asignación ese día en otro turno (opcional, según reglas)
             # Aquí asumimos que pueden servir en AM y PM si marcaron disponibilidad, 

@@ -79,17 +79,17 @@ class Turno(models.Model):
     def __str__(self):
         return f"{self.get_dia_display()} - {self.nombre} ({self.hora_inicio.strftime('%H:%M')} - {self.hora_fin.strftime('%H:%M')})"
 
-class Disponibilidad(models.Model):
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='disponibilidades')
-    turno = models.ForeignKey(Turno, on_delete=models.CASCADE, related_name='usuarios_disponibles')
+class Indisponibilidad(models.Model):
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='indisponibilidades')
+    turno = models.ForeignKey(Turno, on_delete=models.CASCADE, related_name='usuarios_indisponibles')
     
     class Meta:
-        verbose_name = "Disponibilidad"
-        verbose_name_plural = "Disponibilidades"
+        verbose_name = "Indisponibilidad (Excepción)"
+        verbose_name_plural = "Indisponibilidades"
         unique_together = ('usuario', 'turno')
 
     def __str__(self):
-        return f"{self.usuario} - {self.turno}"
+        return f"{self.usuario} NO PUEDE en {self.turno}"
 
 # Modelos de Programación
 class Programacion(models.Model):

@@ -12,6 +12,7 @@
 
 <div class="row g-4 justify-content-center">
     {% if user.is_authenticated %}
+        {% if user.roles.exists %}
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 text-center p-4 hover-shadow">
                 <div class="card-body">
@@ -22,17 +23,20 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         
+        {% if user.roles.exists %}
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 text-center p-4 hover-shadow">
                 <div class="card-body">
                     <i class="fas fa-clipboard-list fa-3x text-success mb-3"></i>
                     <h3 class="card-title">Mis Programaciones</h3>
                     <p class="card-text">Consulta tus turnos asignados para esta semana.</p>
-                    <a href="#" class="btn btn-outline-success mt-2">Ver Programación</a>
+                    <a href="{% url 'mis_programaciones' %}" class="btn btn-outline-success mt-2">Ver Programación</a>
                 </div>
             </div>
         </div>
+        {% endif %}
     {% else %}
         <div class="col-md-8">
             <div class="alert alert-info text-center">

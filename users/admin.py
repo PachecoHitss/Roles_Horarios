@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.utils.html import format_html
-from .models import CustomUser, Rol, Turno, Disponibilidad, Programacion, Asignacion
+from .models import CustomUser, Rol, Turno, Indisponibilidad, Programacion, Asignacion
 from .algoritmo import AlgoritmoProgramacion
 from .notificaciones import enviar_notificacion_programacion, generar_link_whatsapp
 
@@ -23,8 +23,8 @@ class TurnoAdmin(admin.ModelAdmin):
     search_fields = ('nombre',)
     filter_horizontal = ('roles_validos',)
 
-@admin.register(Disponibilidad)
-class DisponibilidadAdmin(admin.ModelAdmin):
+@admin.register(Indisponibilidad)
+class IndisponibilidadAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'turno')
     list_filter = ('usuario', 'turno__dia')
     autocomplete_fields = ['usuario', 'turno']

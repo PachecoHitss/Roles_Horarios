@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from users.models import CustomUser, Rol, Turno, Disponibilidad
+from users.models import CustomUser, Rol, Turno, Indisponibilidad
 import random
 
 class Command(BaseCommand):
@@ -51,12 +51,11 @@ class Command(BaseCommand):
                 user.save()
                 usuarios_creados.append(user)
                 
-                # Crear Disponibilidad Aleatoria
-                # Simular que pueden en el 50% de los turnos válidos para sus roles
+                # Crear Indisponibilidad Aleatoria (Simular que NO pueden en el 20% de los turnos)
                 turnos_posibles = Turno.objects.filter(roles_validos__in=roles_asignados).distinct()
                 for turno in turnos_posibles:
-                    if random.random() > 0.5:
-                        Disponibilidad.objects.get_or_create(usuario=user, turno=turno)
+                    if random.random() < 0.2: # 20% de probabilidad de NO poder
+                        Indisponibilidad.objects.get_or_create(usuario=user, turno=turno)
 
         self.stdout.write(self.style.SUCCESS(f'{len(usuarios_creados)} usuarios voluntarios creados con roles y disponibilidad.'))
 

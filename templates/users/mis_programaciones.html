@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Programaciones{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 text-success"><i class="fas fa-calendar-alt me-2"></i>Mi Programación</h4>
+                {% if programacion %}
+                <span class="badge bg-success">Semana: {{ programacion.fecha_inicio|date:"d M" }} - {{ programacion.fecha_fin|date:"d M" }}</span>
+                {% endif %}
+            </div>
+            <div class="card-body p-4">
+                {% if programacion %}
+                    {% if asignaciones %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Día</th>
+                                        <th>Turno</th>
+                                        <th>Rol Asignado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for asignacion in asignaciones %}
+                                    <tr>
+                                        <td>{{ asignacion.fecha|date:"d/m/Y" }}</td>
+                                        <td class="fw-bold">{{ asignacion.fecha|date:"l"|capfirst }}</td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border">
+                                                {{ asignacion.turno.nombre }}
+                                            </span>
+                                            <small class="text-muted ms-1">
+                                                {{ asignacion.turno.hora_inicio|time:"H:i" }} - {{ asignacion.turno.hora_fin|time:"H:i" }}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ asignacion.rol.nombre }}</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-coffee fa-3x text-muted mb-3"></i>
+                            <h5>¡Semana Libre!</h5>
+                            <p class="text-muted">No tienes turnos asignados para esta programación.</p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5>No hay programación publicada</h5>
+                        <p class="text-muted">Aún no se ha publicado la programación para esta semana.</p>
+                    </div>
+                {% endif %}
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3 border-top">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

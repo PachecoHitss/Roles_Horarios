@@ -33,9 +33,9 @@ def enviar_notificacion_programacion(usuario, asignaciones):
     except Exception as e:
         print(f"Error enviando correo a {usuario.email}: {e}")
 
-def generar_link_whatsapp(usuario, asignaciones):
+def generar_mensaje_whatsapp(usuario, asignaciones):
     """
-    Genera un link de WhatsApp con el mensaje pre-formateado.
+    Genera el texto del mensaje para WhatsApp.
     """
     mensaje = f"Hola {usuario.first_name}, tu programación para esta semana es:\n\n"
     
@@ -46,6 +46,13 @@ def generar_link_whatsapp(usuario, asignaciones):
         mensaje += f"📅 {dia} ({asignacion.turno.nombre})\n⏰ {hora}\n👤 Rol: {rol}\n\n"
     
     mensaje += "Por favor confirma tu asistencia. ¡Bendiciones!"
+    return mensaje
+
+def generar_link_whatsapp(usuario, asignaciones):
+    """
+    Genera un link de WhatsApp con el mensaje pre-formateado.
+    """
+    mensaje = generar_mensaje_whatsapp(usuario, asignaciones)
     
     # Codificar para URL
     mensaje_encoded = urllib.parse.quote(mensaje)

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Resumen de Disponibilidad{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3 text-center">
+                <h4 class="mb-0 text-primary"><i class="fas fa-clipboard-check me-2"></i>Confirmar Disponibilidad</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <p class="lead">Por favor revisa cómo quedará tu disponibilidad semanal.</p>
+                    <p class="text-muted small">El sistema utilizará esta información para asignarte turnos automáticamente.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Columna Disponible -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-success">
+                            <div class="card-header bg-success text-white text-center">
+                                <i class="fas fa-check-circle me-2"></i>DISPONIBLE
+                            </div>
+                            <div class="card-body bg-light">
+                                {% if turnos_disponibles %}
+                                    <ul class="list-group list-group-flush bg-transparent">
+                                        {% for turno in turnos_disponibles %}
+                                        <li class="list-group-item bg-transparent border-0 py-1">
+                                            <i class="fas fa-check text-success me-2 small"></i>
+                                            <strong>{{ turno.get_dia_display }}</strong> 
+                                            <span class="text-muted small">({{ turno.nombre }})</span>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <div class="text-center py-3 text-muted">
+                                        <i class="fas fa-ban mb-2"></i><br>
+                                        No tienes disponibilidad marcada.
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna NO Disponible -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-danger">
+                            <div class="card-header bg-danger text-white text-center">
+                                <i class="fas fa-times-circle me-2"></i>NO PUEDO
+                            </div>
+                            <div class="card-body bg-light">
+                                {% if turnos_no_disponibles %}
+                                    <ul class="list-group list-group-flush bg-transparent">
+                                        {% for turno in turnos_no_disponibles %}
+                                        <li class="list-group-item bg-transparent border-0 py-1 text-danger">
+                                            <i class="fas fa-times me-2 small"></i>
+                                            <strong>{{ turno.get_dia_display }}</strong>
+                                            <span class="small">({{ turno.nombre }})</span>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <div class="text-center py-3 text-success">
+                                        <i class="fas fa-thumbs-up mb-2"></i><br>
+                                        ¡Estás disponible para todo!
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-center mt-5">
+                    <a href="{% url 'disponibilidad' %}" class="btn btn-outline-secondary px-4">
+                        <i class="fas fa-arrow-left me-2"></i>Volver y Corregir
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-primary px-5 fw-bold">
+                        <i class="fas fa-check-double me-2"></i>Confirmar Calendario
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
